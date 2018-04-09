@@ -1,0 +1,8 @@
+{
+  "name": "bug-custom-element-set-class-in-constructor",
+  "dependencies": {},
+  "devDependencies": {
+    "web-component-tester": "6.0.0",
+    "webcomponentsjs": "1.2.0"
+  }
+}

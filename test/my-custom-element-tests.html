@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>my-custom-element tests</title>
+    <meta charset="utf-8">
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+    <link rel="import" href="my-custom-element.html">
+  </head>
+  <body>
+    <my-custom-element></my-custom-element>
+    <test-fixture id="my-custom-element-fixture">
+      <template>
+        <my-custom-element></my-custom-element>
+      </template>
+    </test-fixture>
+    <test-fixture id="my-container">
+      <template>
+        <div></div>
+      </template>
+    </test-fixture>
+    <script>
+      describe('<my-custom-element>', () => {
+        it('is created with a class statically in the DOM', () => {
+          const element = document.body.querySelector('my-custom-element');
+          expect(Array.from(element.classList)).to.contain('my-class-name');
+        });
+        it('is created with a class via a fixture', () => {
+          const element = fixture('my-custom-element-fixture');
+          expect(Array.from(element.classList)).to.contain('my-class-name');
+        });
+        it('is created with a class via innerHTML', () => {
+          const container = fixture('my-container');
+          // fails in Safari 11.1 with an exception:
+          // "NotSupportedError: A newly constructed custom element must not have attributes"
+          container.innerHTML = `<my-custom-element></my-custom-element>`;
+          const element = container.querySelector('my-custom-element');
+          expect(Array.from(element.classList)).to.contain('my-class-name');
+        });
+        it('is created with a class via document.createElement', () => {
+          // fails in Chrome 64 and Safari 11.1
+          // in Chrome 64 with an exception:
+          // "Uncaught DOMException: Failed to construct 'CustomElement': The result must not have attributes"
+          // in Safari 11.1 with an exception:
+          // "NotSupportedError: A newly constructed custom element must not have attributes"
+          const element = document.createElement('my-custom-element');
+          expect(Array.from(element.classList)).to.contain('my-class-name');
+        });
+      });
+    </script>
+  </body>
+</html>
